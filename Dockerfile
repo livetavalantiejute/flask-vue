@@ -52,7 +52,7 @@ RUN npm run build
 
 
 # production
-FROM nginx:stable-alpine as production
+FROM nginx:1.20-alpine as production
 WORKDIR /app
 RUN apk update && apk add --no-cache python3 && \
     python3 -m ensurepip && \
@@ -63,8 +63,10 @@ RUN apk update && apk add --no-cache python3 && \
     rm -r /root/.cache
 RUN apk update && apk add ffmpeg libc-dev libffi-dev gfortran
 RUN apk update && apk add postgresql-dev gcc g++ python3-dev musl-dev
+RUN apk add build-base
 RUN pip3 install numpy==1.24.0
-RUN pip install setuptools==60.8.2
+# RUN pip install setuptools==60.8.2
+# RUN pip install --upgrade pip setuptools wheel
 RUN pip3 install -U opencv-python==4.5.5.62
 RUN python -m pip install --user --upgrade pip
 COPY --from=build-vue /app/dist /usr/share/nginx/html
