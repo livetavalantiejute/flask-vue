@@ -67,13 +67,13 @@ RUN apk add build-base
 RUN pip3 install numpy==1.24.0
 # RUN pip install setuptools==60.8.2
 # RUN pip install --upgrade pip setuptools wheel
-RUN pip3 install -U opencv-python==4.5.5.62
+# RUN pip3 install -U opencv-python==4.5.5.62
+RUN pip install --no-binary opencv-python opencv-python
 RUN python -m pip install --user --upgrade pip
 COPY --from=build-vue /app/dist /usr/share/nginx/html
 COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
 COPY ./server/requirements.txt .
 RUN pip install -r requirements.txt
-EXPOSE 5000
 RUN pip install gunicorn
 COPY ./server .
 CMD gunicorn -b 0.0.0.0:5000 app:app --daemon && \
