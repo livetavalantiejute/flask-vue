@@ -64,6 +64,7 @@ RUN apk update && apk add --no-cache python3 && \
 RUN apk update && apk add ffmpeg libc-dev libffi-dev gfortran
 RUN apk update && apk add postgresql-dev gcc g++ python3-dev musl-dev
 RUN apk add build-base
+RUN apk update && apk add tesseract-ocr tesseract-ocr-dev
 RUN pip3 install numpy==1.24.0
 # RUN pip install setuptools==60.8.2
 # RUN pip install --upgrade pip setuptools wheel

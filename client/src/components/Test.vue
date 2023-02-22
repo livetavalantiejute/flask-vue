@@ -8,19 +8,50 @@ const outputRef = ref(null);
 const formRef = ref(null);
 const isWordClicked = ref([]);
 
+const getData = () => {
+  const path = "/test";
+  axios
+    .get(path)
+    .then((res) => {
+      console.log(res)
+      data.value = res.data.data;
+    })
+    .catch((error) => {
+      // eslint-disable-next-line
+      console.error(error);
+    });
+};
+
 const addData = (formData) => {
   const path = "/test";
   axios
     .post(path, formData, {
-      headers: formData.getHeaders ? formData.getHeaders() : { 'Content-Type': 'multipart/form-data' },
+      headers: {
+        "Content-Type": "multipart/form-data",
+        "Access-Control-Allow-Origin": "*",
+      },
     })
     .then((res) => {
-      console.log(res.data);
-      data.value = res.data.data;
+      console.log(res);
+      // data.value = res.data.data;
+      getData();
     })
     .catch((err) => {
       console.error(err);
+      getData();
     });
+  // fetch(path, {
+  //   method: "POST",
+  //   body: formData,
+  // })
+  //   .then((response) => response.json())
+  //   .then((result) => {
+  //     console.log("Success:", result);
+  //     data.value = result.data
+  //   })
+  //   .catch((error) => {
+  //     console.error("Error:", error);
+  //   });
 };
 
 const submitData = (e) => {
@@ -43,6 +74,8 @@ const changeVisibility = (id) => {
   console.log(id);
   isWordClicked.value[id] = !isWordClicked.value[id];
 };
+
+getData();
 </script>
 
 <template>

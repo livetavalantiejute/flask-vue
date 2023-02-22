@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, make_response
 from flask_cors import CORS, cross_origin
 from dotenv import load_dotenv
 import json
@@ -9,7 +9,7 @@ import difflib
 
 import cv2
 import pytesseract
-pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract'
+pytesseract.pytesseract.tesseract_cmd = r'/usr/bin/tesseract'
 
 load_dotenv()
 
@@ -87,7 +87,7 @@ def readImage(file_bytes):
     gray = get_grayscale(img)
     thresh = thresholding(gray)
         
-    return pytesseract.image_to_string(thresh, lang="lit")
+    return pytesseract.image_to_string(thresh)
 
 
 def matchWords(word):
@@ -125,15 +125,14 @@ def test():
         filestr = request.files['file'].read()
 
         #convert string data to numpy array
-        file_bytes = np.fromstring(filestr, np.uint8)
-        wordsRead = readImage(file_bytes)
-        dataList = wordsRead.split()
+        file_bytes = np.frombuffer(filestr, dtype=np.uint8)
+        words_read = readImage(file_bytes)
+        dataList = words_read.split()
         dataList = unique(dataList)
         corrected_words = map(matchWords, dataList)
         corrected_words = unique(corrected_words)
-
-    # else:
-    response_object['data'] = list(corrected_words)
+    else:
+        response_object['data'] = list(corrected_words)
     return jsonify(response_object)
 
 # PUT and DELETE routes
@@ -166,6 +165,6 @@ def test():
 
 if __name__ == "__main__":
     # port = int(os.environ.get("PORT", 5000))
-    app.run()
+    app.run(host='0.0.0.0')
 
 
