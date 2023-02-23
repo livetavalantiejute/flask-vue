@@ -131,9 +131,11 @@ def test():
         dataList = unique(dataList)
         corrected_words = map(matchWords, dataList)
         corrected_words = unique(corrected_words)
-    else:
         response_object['data'] = list(corrected_words)
-    return jsonify(response_object)
+        return jsonify(response_object)
+    # else:
+    #     response_object['data'] = list(corrected_words)
+    # return jsonify(response_object)
 
 # PUT and DELETE routes
 # @app.route('/data/<data_id>', methods=['PUT'])

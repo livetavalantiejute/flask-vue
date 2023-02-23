@@ -13,7 +13,6 @@ const getData = () => {
   axios
     .get(path)
     .then((res) => {
-      console.log(res)
       data.value = res.data.data;
     })
     .catch((error) => {
@@ -32,26 +31,13 @@ const addData = (formData) => {
       },
     })
     .then((res) => {
-      console.log(res);
-      // data.value = res.data.data;
-      getData();
+      data.value = res.data.data;
+      // getData();
     })
     .catch((err) => {
       console.error(err);
-      getData();
+      // getData();
     });
-  // fetch(path, {
-  //   method: "POST",
-  //   body: formData,
-  // })
-  //   .then((response) => response.json())
-  //   .then((result) => {
-  //     console.log("Success:", result);
-  //     data.value = result.data
-  //   })
-  //   .catch((error) => {
-  //     console.error("Error:", error);
-  //   });
 };
 
 const submitData = (e) => {
@@ -66,16 +52,15 @@ const submitData = (e) => {
   outputRef.value.src = src;
 };
 
-const submitForm = () => {
-  formRef.value.submit();
-};
+// const submitForm = () => {
+//   formRef.value.submit();
+// };
 
 const changeVisibility = (id) => {
-  console.log(id);
   isWordClicked.value[id] = !isWordClicked.value[id];
 };
 
-getData();
+// getData();
 </script>
 
 <template>
@@ -85,10 +70,9 @@ getData();
       <form ref="formRef" @submit.prevent="submitData">
         <input
           type="file"
-          accept="image/jpeg, image/png, image/jpg"
+          accept="image/*"
           ref="inputRef"
           @change="submitData"
-          capture="environment"
         />
       </form>
       <img class="output" ref="outputRef" />
